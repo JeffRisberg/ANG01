@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <meta charset=utf-8/>
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .search {
+      margin-left: 10px;
+    }
+  </style>
+  <link rel="stylesheet" href="bootstrap-3.1.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap-3.1.1-dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://code.angularjs.org/1.2.16/angular.min.js"></script>
+  <script src="js/jquery-1.11.0.min.js"></script>
+  <script src="bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+  <script src="ang01.js"></script>
+  <title>Home Page</title>
+</head>
+<body ng-controller="ctrl">
+<div id="logo"></div>
+
+<div id="container">
+  <div style="overflow:hidden;margin-bottom:20px;">
+    <div style="float:left">
+      <button class="btn btn-primary" ng-click="showHome()">
+        Home
+      </button>
+    </div>
+    <div style="margin-left:15px;float:left;">
+      <button class="btn btn-primary" ng-click="showScreen1()">
+        Create Product
+      </button>
+    </div>
+  </div>
+
+  <!--Home-->
+  <div id="screenHome">
+			<span class="search input-prepend" ng-class="{'input-append':search}">
+				<span class="add-on">
+					<i class="glyphicon glyphicon-search"></i>
+				</span>
+				<input type="text" class="span2" placeholder="Search" ng-model="search">
+			</span>
+
+    <table class="table table-striped">
+      <tr ng-repeat="product in products | filter : search" ng-class="{'muted':isTemp($index)}">
+        <td>{{product.name}}</td>
+        <td>
+          <button class="btn btn-danger btn-mini" ng-click="deleteProduct(product)">
+            <i class="glyphicon glyphicon-trash glyphicon-white"></i>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Create Product -->
+  <div id="screen1" style="display:none;">
+    <h4>Create Product</h4>
+
+    Product Name : <input type="text" class="span2" placeholder="Product Name" ng-model="addName">
+
+    <div class="search input-prepend" ng-class="{'input-append':search}" style="margin-top:20px;">
+      Search for Feature
+				<span class="add-on">
+					<i class="glyphicon glyphicon-search"></i>
+				</span>
+      <input type="text" class="span2" placeholder="Feature Search" ng-model="featuresearch">
+    </div>
+    <div style="height:200px;overflow-y:auto;border:1px solid #AAA;">
+      <table class="table table-striped">
+        <tr ng-repeat="feature in features | filter : featuresearch">
+          <td>{{feature.name}}</td>
+          <td>
+            <input type="checkbox" ng-model="feature.selected">
+          </td>
+        </tr>
+      </table>
+    </div>
+    Selected Feature: <span ng-repeat="feature in features| filter : {'selected':true}">{{feature.name}},</span>
+
+    <br/>
+    <br/>
+    <button class="btn btn-primary" ng-click="saveProduct()">
+      Create Product
+    </button>
+  </div>
+</div>
+</body>
+</html>
