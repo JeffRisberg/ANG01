@@ -11,7 +11,7 @@ body {
     margin: 50px auto 20px;
     padding: 10px;
     background-color: #FEFDEB;
-    min-height: 600px;
+    min-height: 300px;
     overflow: visible;
     border-radius: 6px;
     -moz-box-shadow: 0 0 3px 2px #A1B41D;
@@ -24,8 +24,8 @@ body {
 }
 
 #logo {
-    background: url('../img/logo.png') #93B3F7 no-repeat;
-    height: 80px;
+    background: url('../img/ang01_logo.png') #93B3F7 no-repeat;
+    height: 48px;
 }
 
 #content {
