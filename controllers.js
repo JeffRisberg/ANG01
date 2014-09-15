@@ -1,4 +1,4 @@
-function controllers($scope, $filter) {
+function HomeController($scope, $filter) {
 
     $scope.appState = "home";
 
