@@ -1,5 +1,4 @@
-function HomeController($scope, $filter) {
-
+myApp.controller('HomeController', ['$scope', function ($scope) {
     $scope.appState = "home";
 
     $scope.features = [
@@ -27,4 +26,4 @@ function HomeController($scope, $filter) {
 
         $scope.appState = "home";
     };
-}
+}])
