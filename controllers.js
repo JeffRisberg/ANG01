@@ -5,7 +5,7 @@ myApp.controller('HomeController', ['$scope', function ($scope) {
         {name: 'Talks', selected: false},
         {name: 'Listens', selected: false},
         {name: 'Ties its shoes', selected: false},
-        {name: 'Goes on walks', selected: false}  ,
+        {name: 'Goes on walks', selected: false},
         {name: 'Jumps', selected: false}
     ];
 
