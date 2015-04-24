@@ -1,5 +1,4 @@
 /**
- * Application is called Products
+ * Application is called ang01
  */
-
-var myApp = angular.module('products', [])
+var myApp = angular.module('ang01', []);

@@ -1,94 +1,128 @@
-<!DOCTYPE html>
-<html ng-app="products">
+﻿<!DOCTYPE html>
+<html ng-app="ang01">
 <head>
-    <title>Home Page</title>
-    <meta charset=utf-8/>
+    <title>Superheroes</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-
-    <script src="js/angular.js"></script>
-    <script src="app.js"></script>
-    <script src="controllers.js"></script>
-    <script src="services.js"></script>
-
-    <style>
-        .search {
-            margin-left: 10px;
-        }
-    </style>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
 </head>
-<body ng-controller="HomeController">
-<div id="logo"></div>
-
-<div id="container">
-    <div style="overflow:hidden; margin-bottom:20px;">
-        <div style="float:left">
-            <button class="btn btn-primary" ng-click="appState = 'home'">
-                Home
-            </button>
-        </div>
-        <div style="margin-left:15px; float:left;">
-            <button class="btn btn-primary" ng-click="appState = 'newProduct'">
-                Create Product
-            </button>
-        </div>
+<body>
+<div class="container-fluid" ng-controller="heroCtrl">
+    <div id="logo">
+        <h1>Superheroes Maintenance</h1>
     </div>
 
-    <!--Home-->
-    <div ng-show="appState == 'home'">
-			<span class="search input-prepend" ng-class="{'input-append':search}">
-				<span class="add-on">
-					<i class="glyphicon glyphicon-search"></i>
-				</span>
-				<input type="text" class="span2" placeholder="Search" ng-model="search">
-			</span>
+    <div ng-show="view=='list'">
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-primary btn-lg"
+                        ng-click="startAdd()">
+                    Add new hero
+                </button>
+            </div>
+        </div>
+        <h2>List of Heroes</h2>
 
-        <table class="table table-striped">
-            <tr ng-repeat="product in products | filter : search" ng-class="{'muted':isTemp($index)}">
-                <td>{{$index+1}}</td>
-                <td>{{product.name}}</td>
-                <td>
-                    <button class="btn btn-danger btn-mini" ng-click="deleteProduct(product)">
-                        <i class="glyphicon glyphicon-trash glyphicon-white"></i>
+        <div class="row" ng-repeat="hero in heroes"
+             ng-class="{oddRow: $index % 2 == 0}">
+            <div class="col-sm-8">
+                <h4>{{$index + 1}}: {{hero}}</h4>
+            </div>
+            <div class="col-sm-4" style="margin-top: 5px;">
+                <div class="pull-right">
+                    <button class="btn btn-warning btn-sm"
+                            ng-click="startEdit($index)">
+                        Edit
                     </button>
-                </td>
-            </tr>
-        </table>
+                    <button class="btn btn-danger btn-sm"
+                            ng-click="startRemove($index)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Create Product -->
-    <div ng-show="appState == 'newProduct'">
-        <h4>Create Product</h4>
+    <div ng-show="view=='add'">
+        <h3>Specify the name of the hero:</h3>
 
-        Product Name: <input type="text" class="span2" placeholder="Product Name" ng-model="addName">
-
-        <div class="search input-prepend" ng-class="{'input-append':search}" style="margin-top:20px;">
-            Search for Feature
-				<span class="add-on">
-					<i class="glyphicon glyphicon-search"></i>
-				</span>
-            <input type="text" class="span2" placeholder="Feature Search" ng-model="featuresearch">
+        <div class="row">
+            <div class="col-sm-6">
+                <input class="form-control input-lg" type="text"
+                       placeholder="hero name"
+                       ng-model="heroBox"/>
+            </div>
         </div>
-        <div style="height:200px;overflow-y:auto;border:1px solid #AAA;">
-            <table class="table table-striped">
-                <tr ng-repeat="feature in features | filter : featuresearch">
-                    <td>{{feature.name}}</td>
-                    <td>
-                        <input type="checkbox" ng-model="feature.selected">
-                    </td>
-                </tr>
-            </table>
+        <div class="row" style="margin-top: 12px;">
+            <div class="col-sm-6">
+                <button class="btn btn-success btn"
+                        ng-disabled="heroBox==''"
+                        ng-click="add()">
+                    Add
+                </button>
+                <button class="btn btn-warning btn"
+                        ng-click="cancel()">
+                    Cancel
+                </button>
+            </div>
         </div>
-        Selected Feature: <span ng-repeat="feature in features| filter : {'selected':true}">{{feature.name}},</span>
-
-        <br/>
-        <br/>
-        <button class="btn btn-primary" ng-click="saveProduct()">
-            Create Product
-        </button>
     </div>
+
+    <div ng-show="view=='edit'">
+        <h3>Edit the name of the hero:</h3>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <input class="form-control input-lg" type="text"
+                       placeholder="hero name"
+                       ng-model="heroBox"/>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 12px;">
+            <div class="col-sm-6">
+                <button class="btn btn-success btn"
+                        ng-disabled="heroBox==''"
+                        ng-click="save()">
+                    Save
+                </button>
+                <button class="btn btn-warning btn"
+                        ng-click="cancel()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="view=='delete'">
+        <h3>Confirm delete</h3>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <p>
+                    Are you sure you want to delete hero '{{getSelected()}}'?
+                </p>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 12px;">
+            <div class="col-sm-6">
+                <button class="btn btn-success btn"
+                        ng-click="cancel()">
+                    No
+                </button>
+                <button class="btn btn-danger btn"
+                        ng-click="remove()">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script src="js/angular.min.js"></script>
+<script src="initialData.js"></script>
+<script src="app.js"></script>
+<script src="controller.js"></script>
 </body>
 </html>
